@@ -34,21 +34,26 @@ def bfs(csv_data):
 
 
 # Depth-first search algorithm
-def dfs(csv_data, current_x, current_y, visited = None):
+def dfs(csv_data, current_y = None, current_x = None, visited = None):
     print("USING DFS")
     #print(csv_data[:,0])
     #print(csv_data[0:2])
     #print(csv_data[sn][0])
-    if(csv_data[sn][0] == csv_data[en][0]):
+
+
+# Calls bfs or dfs if sn != en
+def check_start_end():
+    if(sn == en):
         print("Path = " + str(sn))
-        return
+    else:
+        if(sm == 1):
+            bfs(csv_data, sn, 1)
 
+        if(sm == 2):
+            dfs(csv_data, sn, 1)
 
+# Read in csv file fn
 csv_data = np.genfromtxt(fn, delimiter = ',')
 
-
-if(sm == 1):
-    bfs(csv_data)
-
-if(sm == 2):
-    dfs(csv_data)
+# Start program
+check_start_end()
