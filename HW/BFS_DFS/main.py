@@ -8,7 +8,7 @@
 
 import numpy as np
 
-sm = int(input("Please pick BFS(1) or DFS(2): "))
+sm = int(input("Please pick search method BFS(1) or DFS(2): "))
 while(sm != 1 and sm != 2):
     print("Search method choices are 1 or 2")
     sm = int(input("Please pick BFS(1) or DFS(2): "))
@@ -36,7 +36,9 @@ def bfs(csv_data):
 # Depth-first search algorithm
 def dfs(csv_data):
     print("USING DFS")
-
+    #print(csv_data[:,0])
+    #print(csv_data[0:2])
+    print(csv_data[sn][0])
 
 
 csv_data = np.genfromtxt(fn, delimiter = ',')
