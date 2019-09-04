@@ -34,11 +34,14 @@ def bfs(csv_data):
 
 
 # Depth-first search algorithm
-def dfs(csv_data):
+def dfs(csv_data, current_x, current_y, visited = None):
     print("USING DFS")
     #print(csv_data[:,0])
     #print(csv_data[0:2])
-    print(csv_data[sn][0])
+    #print(csv_data[sn][0])
+    if(csv_data[sn][0] == csv_data[en][0]):
+        print("Path = " + str(sn))
+        return
 
 
 csv_data = np.genfromtxt(fn, delimiter = ',')
