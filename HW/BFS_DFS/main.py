@@ -1,12 +1,13 @@
 #------------------------------------------#
 #                 HW #1                    #
 #       Author: Justin Weigle              #
-#       Edited: 02 Sept 2019               #
+#       Edited: 04 Sept 2019               #
 #------------------------------------------#
 #    Breadth-first vs Depth-first Search   #
 #------------------------------------------#
 
 import numpy as np
+import csv
 
 sm = int(input("Please pick search method BFS(1) or DFS(2): "))
 while(sm != 1 and sm != 2):
@@ -36,9 +37,8 @@ def bfs(csv_data):
 # Depth-first search algorithm
 def dfs(csv_data, current_y = None, current_x = None, visited = None):
     print("USING DFS")
-    #print(csv_data[:,0])
-    #print(csv_data[0:2])
-    #print(csv_data[sn][0])
+    print(csv_data[sn][0])
+    print(csv_data[sn])
 
 
 # Calls bfs or dfs if sn != en
@@ -52,8 +52,11 @@ def check_start_end():
         if(sm == 2):
             dfs(csv_data, sn, 1)
 
-# Read in csv file fn
-csv_data = np.genfromtxt(fn, delimiter = ',')
+f = open(fn, 'r')
+reader = csv.reader(f)
+csv_data = []
+for row in reader:
+    csv_data.append(row)
 
 # Start program
 check_start_end()
