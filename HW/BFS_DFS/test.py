@@ -10,6 +10,7 @@ for row in reader:
     data.append(row)
 
 stack = data.pop()
+print(type(stack))
 
 print(data[len(data)-1])
 

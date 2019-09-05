@@ -35,10 +35,12 @@ def bfs(csv_data):
 
 
 # Depth-first search algorithm
-def dfs(csv_data, current_y = None, current_x = None, visited = None):
+def dfs(csv_data, visited = None):
     print("USING DFS")
-    print(csv_data[sn][0])
-    print(csv_data[sn])
+    #print(csv_data[sn][0])
+    #print(csv_data[sn])
+    visited.append(csv_data[sn][0])
+    stack.append(csv_data.pop(sn))
 
 
 # Calls bfs or dfs if sn != en
@@ -47,10 +49,10 @@ def check_start_end():
         print("Path = " + str(sn))
     else:
         if(sm == 1):
-            bfs(csv_data, sn, 1)
+            bfs(csv_data,)
 
         if(sm == 2):
-            dfs(csv_data, sn, 1)
+            dfs(csv_data)
 
 f = open(fn, 'r')
 reader = csv.reader(f)
@@ -58,5 +60,7 @@ csv_data = []
 for row in reader:
     csv_data.append(row)
 
+# Stack for DFS
+stack = list()
 # Start program
 check_start_end()
