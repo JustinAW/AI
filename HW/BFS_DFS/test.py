@@ -6,15 +6,18 @@ reader = csv.reader(f)
 
 data = []
 
-for row in reader:
+#for row in reader:
+#    data.append(row)
+[next(reader) for row in range(0, 5)]:
     data.append(row)
 
-stack = data.pop()
-print(type(stack))
+stack = data.pop(3)
 
-print(data[len(data)-1])
+print(data)
 
-data.append(stack)
+#print(data[len(data)-1])
 
-print("Popped item: ")
-print(data[len(data)-1])
+#data.append(stack)
+
+#print("Popped item: ")
+#print(data[len(data)-1])
