@@ -31,17 +31,27 @@ fn = fn + ".csv"
 
 # Breadth-first search algorithm
 def bfs(csv_data):
-    print("USING BFS")
-
+    None
 
 # Depth-first search algorithm
-def dfs(csv_data, cn = None, visited = None):
-    print("USING DFS")
+def dfs(csv_data, cn = None, visited = list()):
     #print(csv_data[sn][0])
     #print(csv_data[sn])
-    visited.append(csv_data[cn][0])
+    visited.append(int(csv_data[cn][0]))
+    i = 1
     if(cn != en):
-        stack.append(csv_data.pop(cn))
+        tmp = int(csv_data[cn][i])
+        stack.append(csv_data[cn])
+        while(tmp in visited):
+            if(i >= len(csv_data[cn])-1):
+                break
+            i = i + 1
+            tmp = int(csv_data[cn][i])
+        cn = int(tmp)
+        print(cn)
+        dfs(csv_data, cn, visited)
+    else:
+        print(visited)
 
 
 # Calls bfs or dfs if sn != en
@@ -50,9 +60,12 @@ def check_start_end():
         print("Path = " + str(sn))
     else:
         if(sm == 1):
+            print("USING BFS")
             bfs(csv_data, sn)
+            print(csv_data[sn])
 
         if(sm == 2):
+            print("USING DFS")
             dfs(csv_data, sn)
 
 f = open(fn, 'r')
@@ -60,6 +73,11 @@ reader = csv.reader(f)
 csv_data = []
 for row in reader:
     csv_data.append(row)
+
+for row in csv_data:
+    blankcount = row.count('')
+    for i in range(0, blankcount):
+        row.pop()
 
 # Stack for DFS
 stack = list()
