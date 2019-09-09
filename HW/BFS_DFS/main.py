@@ -42,17 +42,15 @@ def bfs(csv_data):
 def dfs_init(csv_data):
     dfs(csv_data, int(csv_data[sn][0]))
 
+path = []
 # Depth-first search algorithm
-def dfs(csv_data, cn = None, vip = list(), visited = list()):
-    if(cn == en):
-        return cn
-    else:
-        vip.append(cn)
-        for elem in csv_data[cn]:
-            if elem not in visited:
-                elem = int(elem)
-                dfs(csv_data, int(csv_data[elem][0]))
-            visited.append(node)
+def dfs(csv_data, cn, visited = [], path = []):
+    visited.append(cn)
+
+    for n in csv_data[int(cn)]:
+        if n not in visited:
+            visited = dfs(csv_data, n, visited)
+        
     return visited
 
 
@@ -67,7 +65,7 @@ def check_start_end():
 
         if(sm == 2):
             print("USING DFS")
-            path = dfs_init(csv_data)
+            dfs(csv_data, sn)
             print(path)
 
 
