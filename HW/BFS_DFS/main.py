@@ -1,7 +1,7 @@
 #------------------------------------------#
 #                 HW #1                    #
 #       Author: Justin Weigle              #
-#       Edited: 04 Sept 2019               #
+#       Edited: 09 Sept 2019               #
 #------------------------------------------#
 #    Breadth-first vs Depth-first Search   #
 #------------------------------------------#
@@ -9,24 +9,28 @@
 import numpy as np
 import csv
 
-sm = int(input("Please pick search method BFS(1) or DFS(2): "))
-while(sm != 1 and sm != 2):
-    print("Search method choices are 1 or 2")
-    sm = int(input("Please pick BFS(1) or DFS(2): "))
+#sm = int(input("Please pick search method BFS(1) or DFS(2): "))
+#while(sm != 1 and sm != 2):
+#    print("Search method choices are 1 or 2")
+#    sm = int(input("Please pick BFS(1) or DFS(2): "))
+sm = 2
 
-sn = int(input("Please enter the starting node (1-200): "))
-while(sn < 1 or 200 < sn or type(sn) != int):
-    print("Starting node not integer from 1-200")
-    sn = int(input("Please enter the starting node (1-200): "))
+#sn = int(input("Please enter the starting node (1-200): "))
+#while(sn < 1 or 200 < sn or type(sn) != int):
+#    print("Starting node not integer from 1-200")
+#    sn = int(input("Please enter the starting node (1-200): "))
+sn = 1
 
-en = int(input("Please enter the ending node (1-200): "))
-while(en < 1 or 200 < en or type(en) != int):
-    print("Ending node not integer from 1-200")
-    en = int(input("Please enter the ending node (1-200): "))
+#en = int(input("Please enter the ending node (1-200): "))
+#while(en < 1 or 200 < en or type(en) != int):
+#    print("Ending node not integer from 1-200")
+#    en = int(input("Please enter the ending node (1-200): "))
+en = 5
 
 
-fn = input("Please enter a csv filename: ")
-fn = fn + ".csv"
+#fn = input("Please enter a csv filename: ")
+#fn = fn + ".csv"
+fn = "BFS_DFS.csv"
 
 
 # Breadth-first search algorithm
@@ -34,24 +38,8 @@ def bfs(csv_data):
     None
 
 # Depth-first search algorithm
-def dfs(csv_data, cn = None, visited = list()):
-    #print(csv_data[sn][0])
-    #print(csv_data[sn])
-    visited.append(int(csv_data[cn][0]))
-    i = 1
-    if(cn != en):
-        tmp = int(csv_data[cn][i])
-        stack.append(csv_data[cn])
-        while(tmp in visited):
-            if(i >= len(csv_data[cn])-1):
-                break
-            i = i + 1
-            tmp = int(csv_data[cn][i])
-        cn = int(tmp)
-        print(cn)
-        dfs(csv_data, cn, visited)
-    else:
-        print(visited)
+def dfs(csv_data):
+    None
 
 
 # Calls bfs or dfs if sn != en
@@ -66,7 +54,7 @@ def check_start_end():
 
         if(sm == 2):
             print("USING DFS")
-            dfs(csv_data, sn)
+            dfs(csv_data)
 
 f = open(fn, 'r')
 reader = csv.reader(f)
