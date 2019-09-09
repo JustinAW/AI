@@ -42,9 +42,8 @@ def bfs(csv_data):
 def dfs_init(csv_data):
     dfs(csv_data, int(csv_data[sn][0]))
 
-path = []
 # Depth-first search algorithm
-def dfs(csv_data, cn, visited = [], path = []):
+def dfs(csv_data, cn, visited = []): 
     visited.append(cn)
 
     for n in csv_data[int(cn)]:
@@ -65,7 +64,7 @@ def check_start_end():
 
         if(sm == 2):
             print("USING DFS")
-            dfs(csv_data, sn)
+            path = dfs(csv_data, sn)
             print(path)
 
 
