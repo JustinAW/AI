@@ -15,17 +15,15 @@ import csv
 #    sm = int(input("Please pick BFS(1) or DFS(2): "))
 sm = 2
 
-#sn = int(input("Please enter the starting node (1-200): "))
-#while(sn < 1 or 200 < sn or type(sn) != int):
-#    print("Starting node not integer from 1-200")
-#    sn = int(input("Please enter the starting node (1-200): "))
-sn = 1
+sn = int(input("Please enter the starting node (1-200): "))
+while(sn < 1 or 200 < sn or type(sn) != int):
+    print("Starting node not integer from 1-200")
+    sn = int(input("Please enter the starting node (1-200): "))
 
-#en = int(input("Please enter the ending node (1-200): "))
-#while(en < 1 or 200 < en or type(en) != int):
-#    print("Ending node not integer from 1-200")
-#    en = int(input("Please enter the ending node (1-200): "))
-en = 5
+en = int(input("Please enter the ending node (1-200): "))
+while(en < 1 or 200 < en or type(en) != int):
+    print("Ending node not integer from 1-200")
+    en = int(input("Please enter the ending node (1-200): "))
 
 
 #fn = input("Please enter a csv filename: ")
@@ -43,8 +41,11 @@ def dfs_init(csv_data):
     dfs(csv_data, int(csv_data[sn][0]))
 
 # Depth-first search algorithm
-def dfs(csv_data, cn, visited = []): 
-    visited.append(cn)
+def dfs(csv_data, cn, visited = None): 
+    if(visited is None):
+        visited = []
+    else:
+        visited.append(cn)
 
     for n in csv_data[int(cn)]:
         if n not in visited:
@@ -64,7 +65,14 @@ def check_start_end():
 
         if(sm == 2):
             print("USING DFS")
-            path = dfs(csv_data, sn)
+            traversal = dfs(csv_data, sn)
+            print("DFS traversal")
+            path = ''
+            for i in traversal:
+                path = path + str(i) + " - "
+                if(int(i) == en):
+                    path = path.rstrip("- ") 
+                    break
             print(path)
 
 
