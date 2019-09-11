@@ -1,10 +1,10 @@
-#------------------------------------------#
-#                 HW #1                    #
-#       Author: Justin Weigle              #
-#       Edited: 10 Sept 2019               #
-#------------------------------------------#
-#    Breadth-first vs Depth-first Search   #
-#------------------------------------------#
+#-------------------------------------------#
+#                  W #1                     #
+#       Author: Justin Weigle               #
+#       Edited: 11 Sept 2019                #
+#-------------------------------------------#
+#    Breadth-first vs Depth-first Search    #
+#-------------------------------------------#
 
 import numpy as np
 import csv
@@ -37,18 +37,17 @@ def bfs(csv_data, cn, visited = None):
     q = queue.Queue()
     if(visited is None):
         visited = []
-    else:
-        visited.append(cn)
     q.put(cn)
     while not q.empty():
         cn = q.get()
         if cn == en:
-            print("GOALLL")
-            return cn
+            print("goal")
+            return visited
         for n in csv_data[int(cn)]:
             if n not in visited:
+                print("dang it bobby")
                 visited.append(n)
-                q.put(n)
+                q.put(int(n))
 
 
 # Depth-first search algorithm
@@ -80,12 +79,17 @@ def check_start_end():
             traversal = dfs(csv_data, sn)
             print("DFS traversal")
             path = ''
+            found = False
             for i in traversal:
                 path = path + str(i) + " - "
                 if(int(i) == en):
+                    found = True
                     path = path.rstrip("- ") 
                     break
-            print(path)
+            if(found):
+                print(path)
+            else:
+                print("No path between nodes")
 
 
 f = open(fn, 'r')
