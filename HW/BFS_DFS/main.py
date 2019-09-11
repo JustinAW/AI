@@ -1,19 +1,20 @@
 #------------------------------------------#
 #                 HW #1                    #
 #       Author: Justin Weigle              #
-#       Edited: 09 Sept 2019               #
+#       Edited: 10 Sept 2019               #
 #------------------------------------------#
 #    Breadth-first vs Depth-first Search   #
 #------------------------------------------#
 
 import numpy as np
 import csv
+import queue
 
 #sm = int(input("Please pick search method BFS(1) or DFS(2): "))
 #while(sm != 1 and sm != 2):
 #    print("Search method choices are 1 or 2")
 #    sm = int(input("Please pick BFS(1) or DFS(2): "))
-sm = 2
+sm = 1
 
 sn = int(input("Please enter the starting node (1-200): "))
 while(sn < 1 or 200 < sn or type(sn) != int):
@@ -32,13 +33,23 @@ fn = "BFS_DFS.csv"
 
 
 # Breadth-first search algorithm
-def bfs(csv_data):
-    None
+def bfs(csv_data, cn, visited = None):
+    q = queue.Queue()
+    if(visited is None):
+        visited = []
+    else:
+        visited.append(cn)
+    q.put(cn)
+    while not q.empty():
+        cn = q.get()
+        if cn == en:
+            print("GOALLL")
+            return cn
+        for n in csv_data[int(cn)]:
+            if n not in visited:
+                visited.append(n)
+                q.put(n)
 
-
-# Depth-first search initialization
-def dfs_init(csv_data):
-    dfs(csv_data, int(csv_data[sn][0]))
 
 # Depth-first search algorithm
 def dfs(csv_data, cn, visited = None): 
@@ -61,7 +72,8 @@ def check_start_end():
     else:
         if(sm == 1):
             print("USING BFS")
-            bfs(csv_data, sn)
+            path = bfs(csv_data, sn)
+            print(path)
 
         if(sm == 2):
             print("USING DFS")
