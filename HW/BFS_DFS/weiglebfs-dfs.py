@@ -1,7 +1,7 @@
 #-------------------------------------------#
 #                 HW #1                     #
 #       Author: Justin Weigle               #
-#       Edited: 11 Sept 2019                #
+#       Edited: 12 Sept 2019                #
 #-------------------------------------------#
 #    Breadth-first vs Depth-first Search    #
 #-------------------------------------------#
@@ -36,7 +36,7 @@ def bfs(csv_data, cn, visited = None):
     if(visited is None):
         visited = []
     q.put(cn)
-    while not q.empty():
+    while q:
         cn = q.get()
         if cn == en:
             return visited
@@ -55,12 +55,13 @@ def dfs(csv_data, cn, visited = None):
 
     for n in csv_data[int(cn)]:
         if n not in visited:
+            # recursively calls dfs to create stack
             visited = dfs(csv_data, n, visited)
         
     return visited
 
 
-# Calls bfs or dfs if sn != en
+# Calls search method bfs or dfs if startnode != endnode
 def check_start_end():
     if(sn == en):
         print("Path = " + str(sn))
