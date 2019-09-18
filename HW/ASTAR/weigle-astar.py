@@ -9,16 +9,16 @@
 import csv
 from queue import PriorityQueue
 import math
+import numpy as np
 
 
-def astar(graph, start, goal, h):
+def astar(edgeweights, start, goal, h):
     open_set = PriorityQueue()
     open_set.put(start)
+    closed_set = PriorityQueue()
     came_from = []
-    g_score = [float("inf")] * len(graph)
-    for i in range(1, len(graph)):
-        if graph[i][0] == start:
-            g_score[i] = 0
+    g_score = [math.inf] * 202
+    g_score[int(start)] = 0
     f_score = [math.inf] * len(h)
     f_score[int(start)] = h[int(start)]
 
@@ -30,8 +30,8 @@ def astar(graph, start, goal, h):
         if current == goal:
             return "Goal Reached"
 
-        open_set.get()
-
+        open_set.get(current)
+        closed_set.put(current)
 
 
 if __name__=="__main__":
