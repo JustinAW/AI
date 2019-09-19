@@ -1,7 +1,7 @@
 #-------------------------------------------#
 #                 HW #2                     #
 #       Author: Justin Weigle               #
-#       Edited: 18 Sept 2019                #
+#       Edited: 19 Sept 2019                #
 #-------------------------------------------#
 #           A* Search Algorithm             #
 #-------------------------------------------#
@@ -15,15 +15,26 @@ def astar(edgeweights, start, goal, h):
     open_set = PriorityQueue()
     closed_set = []
     open_set.put(start)
+    f_scores = {}
+    f_scores[start] = (start, 0)
 
-    print(edgeweights[start])
-    for path in edgeweights[start]:
-        if(int(path[0]) < int(goal)):
-            f_score = float(path[1]) + float(h[path[0]][0][int(goal)-1])
-            print(h[path[0]][0][int(goal)-1])
-        else:
-            f_score = float(path[1]) + float(h[goal][0][int(path[0])-1])
-        print(f_score)
+    """
+    while open_set:
+        min_score = 0
+    """
+    for node in open_set.queue:
+        for path in edgeweights[node]:
+            if(int(path[0]) < int(goal)):
+                f_scores[node] = (path[0], float(path[1]) + float(h[path[0]][0][int(goal)-1]))
+            else:
+                print(f_scores[node])
+                f_scores[node].append(path[0], float(path[1]) + float(h[goal][0][int(path[0])-1]))
+
+    print(f_scores)
+#    print(f_scores[start])
+#    print(sorted(f_scores.values()))
+#    for keys in f_scores.values():
+#        print(keys)
 
 if __name__=="__main__":
     fn = "EdgeWeights.csv"
@@ -56,4 +67,4 @@ if __name__=="__main__":
     goal = "10"
 
     result = astar(edgeweights, sn, goal, mincosts)
-    print(result)
+#    print(result)
