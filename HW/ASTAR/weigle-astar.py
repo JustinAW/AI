@@ -28,7 +28,7 @@ def astar(edgeweights, start, goal, h):
                 f_scores[node] = (path[0], float(path[1]) + float(h[path[0]][0][int(goal)-1]))
             else:
                 print(f_scores[node])
-                f_scores[node].append(path[0], float(path[1]) + float(h[goal][0][int(path[0])-1]))
+                f_scores[node] = (path[0], float(path[1]) + float(h[goal][0][int(path[0])-1]))
 
     print(f_scores)
 #    print(f_scores[start])
