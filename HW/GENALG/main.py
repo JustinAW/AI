@@ -8,24 +8,15 @@
 
 import numpy as np
 
+def ga_short_route(x, start, goal, playground):
+    
+
 def set_start_goal(playground, start, goal):
     """
     Sets the start and goal locations for a playground
-    
-    playground
-        :type: numpy.zeros()
-        :param: multidimensional numpy array of all zeros
-    start
-        :type:  list
-        :param: list of 2 integers [x, y], coords for playground start
-
-    goal
-        :type: list
-        :param: list of 2 integers [x, y], coords for playground goal
     """
     playground[start[0], start[1]] = 2
     playground[goal[0], goal[1]] = 3
-    print(playground)
     return playground
 
 def get_playground(width, height):
