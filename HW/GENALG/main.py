@@ -8,7 +8,11 @@
 
 import numpy as np
 
-def ga_short_route(x, start, goal, playground):
+class Fitness_Function(object):
+    def __init__(self, ff, start, goal, playground):
+
+
+def ga_short_route(ff, start, goal, playground):
     
 
 def set_start_goal(playground, start, goal):
