@@ -21,8 +21,11 @@ class snake ():
         self.bounds = playground
         self.position = start
         self.food = goal
+        self.path = []
 
     def hunt():
+        for i in range(max_steps):
+            self.path.append(fitness(bounds, position, alphas[i]))
 
 
 def gen_snakes(playground, start, goal, opts):
