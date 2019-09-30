@@ -1,56 +1,54 @@
 #---------------------------------------#
 #               HW #3                   #
 #       Author: Justin Weigle           #
-#       Edited: 23 Sep 2019             #
+#       Edited: 30 Sep 2019             #
 #---------------------------------------#
 #       Genetic Algorithm               #
 #---------------------------------------#
 
-import numpy as np
+import random
+from math import cos, sin, pi
+from math import degrees as deg
 
-class Fitness_Function(object):
-    def __init__(self, ff, start, goal, playground):
+def fitness(playground, loc, alpha):
+    new_loc = [loc[0] + deg(cos(alpha)), loc[1] + deg(sin(alpha))]
+
+class snake ():
+    def __init__(self, playground, start, goal, max_steps):
+        self.alphas = []
+        for i in range(max_steps):
+            self.alphas.append(random.uniform(0, (pi/2)))
+        self.bounds = playground
+        self.position = start
+        self.food = goal
+
+    def hunt():
 
 
-def ga_short_route(ff, start, goal, playground):
-    
+def gen_snakes(playground, start, goal, opts):
+    snakes = []
+    for i in range(opts["PopulationSize"]):
+        snakes.append(snake(playground, start, goal, opts["MaxSteps"]))
 
-def set_start_goal(playground, start, goal):
-    """
-    Sets the start and goal locations for a playground
-    """
-    playground[start[0], start[1]] = 2
-    playground[goal[0], goal[1]] = 3
-    return playground
-
-def get_playground(width, height):
-    """
-    Returns a playground of dimensions width x height
-    """
-    playground = np.zeros((width, height))
-    return playground
+    return snakes
 
 if __name__=="__main__":
     # set things up
-    playground = get_playground(width = 32, height = 18)
+    playground = [(0,32), (0,18)]
 
-    max_steps = 22
+    max_steps = 25
 
     start = [1, 1]
     goal = [23, 10]
 
-    playground = set_start_goal(playground, start, goal)
-
-    # obstacles
-#    obst1 = None
-#    obst2 = None
-#    obst3 = None
-
     opts = dict()
     opts.update({
-        "PopulationSize":30,
-        "Generations":500,
-        "EliteCount":0,
-        "TolFun":0.001,
-        "StallGenLimit":5000,
-        })
+        "PopulationSize":50,
+        "Generations":1000,
+        "MaxSteps":25,
+    })
+
+    snakes = gen_snakes(playground, start, goal, opts)
+#    print(snakes[49].alphas)
+
+
