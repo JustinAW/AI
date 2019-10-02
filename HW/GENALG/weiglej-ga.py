@@ -8,6 +8,7 @@
 
 import random
 from math import cos, sin, pi, hypot, inf
+import operator
 
 """
 define the distance formula for determining the distance of a snake at a
@@ -70,9 +71,17 @@ def evaluate(snake, goal, playground):
 def calc_select_prob(snake, evals):
     snake.select_prob = 1 - (snake.eval / sum(evals))
     
+def select_survivors(snakes, select_probs, num_survivors, random_chance, children):
+    sorted_probs = sorted(select_probs.items(), key = operator.itemgetter(1), reverse = True)
+    count = 0
+    for i in range(len(sorted_probs)):
+        if (random_chance <= sorted_probs[i][1] and count < num_survivors):
+            children.append(snakes[int(sorted_probs[i][0])])
+            count += 1
+
 
 if __name__=="__main__":
-    random.seed(3295)
+    random.seed(3293)
     # set things up
     playground = [(0,32), (0,18)]
     max_steps = 25
@@ -106,4 +115,6 @@ if __name__=="__main__":
     for i in range(len(snakes)):
         select_probs[str(i)] = snakes[i].select_prob
 
-    print(sorted(select_probs.values()))
+    children = []
+    random_chance = random.uniform(0, 1)
+    select_survivors(snakes, select_probs, num_survivors, random_chance, children)
