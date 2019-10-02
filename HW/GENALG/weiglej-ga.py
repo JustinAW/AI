@@ -104,5 +104,6 @@ if __name__=="__main__":
 
     select_probs = dict()
     for i in range(len(snakes)):
-        select_probs.add(str(i): snakes[i].select_prob)
+        select_probs[str(i)] = snakes[i].select_prob
 
+    print(sorted(select_probs.values()))
