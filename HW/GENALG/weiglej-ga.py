@@ -60,16 +60,16 @@ def evaluate(snake, goal, playground):
             or snake.path[i][0] < playground[1][0]
         ):
             snake.eval = i + 38
-            print(snake.eval)
             return
     for i in range(len(distances)):
         if (distances[i] < 0.5):
             snake.eval = i
-            print(snake.eval)
             return
     snake.eval = 25 + distances[24]
-    print(snake.eval)
 
+def calc_select_prob(snake, evals):
+    snake.select_prob = 1 - (snake.eval / sum(evals))
+    
 
 if __name__=="__main__":
     random.seed(3295)
@@ -84,10 +84,25 @@ if __name__=="__main__":
         "Generations":1000,
         "MaxSteps":25,
     })
+    num_survivors = opts["PopulationSize"] * 0.04
     snakes = gen_snakes(start, opts)
+    #end setup
+
 
     for snake in snakes:
         snake.hunt()
 
     for snake in snakes:
         evaluate(snake, goal, playground)
+
+    evals = []
+    for snake in snakes:
+        evals.append(snake.eval)
+
+    for snake in snakes:
+        calc_select_prob(snake, evals)
+
+    select_probs = dict()
+    for i in range(len(snakes)):
+        select_probs.add(str(i): snakes[i].select_prob)
+
