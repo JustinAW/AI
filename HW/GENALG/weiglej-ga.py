@@ -1,7 +1,7 @@
 #---------------------------------------#
 #               HW #3                   #
 #       Author: Justin Weigle           #
-#       Edited: 01 Oct 2019             #
+#       Edited: 04 Oct 2019             #
 #---------------------------------------#
 #       Genetic Algorithm               #
 #---------------------------------------#
@@ -9,6 +9,11 @@
 import random
 from math import cos, sin, pi, hypot, inf
 import operator
+
+#imports for animation
+import matplotlib.pyplot as plt
+
+USE_ANIMATION = False # for deciding whether to animate or not
 
 """
 define the distance formula for determining the distance of a snake at a
@@ -40,16 +45,35 @@ class Snake():
         self.select_prob = 0
         self.selected = False
 
+        if USE_ANIMATION:
+            self.path_x = []
+            self.path_y = []
+            self.path_x.append(start[0])
+            self.path_y.append(start[1])
+
     def hunt(self):
         if self.path:
             self.loc = self.start
             self.path = []
+        if USE_ANIMATION:
+            if self.path_x or self.path_y:
+                self.path_x = []
+                self.path_y = []
+                self.path_x.append(self.start[0])
+                self.path_y.append(self.start[1])
+
         for i in range(self.max_steps):
             self.loc = [
                     self.loc[0] + cos(self.alphas[i][0]), 
                     self.loc[1] + sin(self.alphas[i][1])
             ]
             self.path.append(self.loc)
+            if USE_ANIMATION:
+                self.path_x.append(self.loc[0])
+                self.path_y.append(self.loc[1])
+        if USE_ANIMATION:
+            ax.plot(self.path_x, self.path_y, color = 'g')
+            fig.canvas.draw()
 
 
 def gen_snakes(start, opts):
@@ -67,12 +91,13 @@ def gen_snakes(start, opts):
     return snakes
 
 
-def evaluate(snake, goal, playground):
+def evaluate(snake, goal, playground, opts):
     """ Evaluates a snake based on its distance from the goal
     params:
         snake: class, Snake
         goal: list, [x, y]
         playground: list of 2 tuples, [x(min, max), y(min, max)]
+        opts: dict, contains hyperparameters
     returns:
         list of sorted distances of snake from goal, 
         boolean indicating if the goal was reached
@@ -88,13 +113,14 @@ def evaluate(snake, goal, playground):
             or snake.path[i][0] < playground[1][0]
         ):
             snake.eval = i + 38
-            return sorted(distances), goal_reached
+            # return with worst distance first since the snake went oob
+            return sorted(distances, reverse = True), goal_reached
     for i in range(len(distances)):
         if (distances[i] < 0.5):
             snake.eval = i
             goal_reached = True
             return sorted(distances), goal_reached
-    snake.eval = 25 + distances[24]
+    snake.eval = 25 + distances[opts["MaxSteps"]-1]
     return sorted(distances), goal_reached
 
 
@@ -204,19 +230,28 @@ def mutation(next_gen, opts):
             ]
 
 def ga_soln_snakes():
-    """ TODO
+    """ Creates population of snakes that hunt for food and make children.
+
+    Uses a genetic algorithm where snakes are placed at a starting position
+    and have a goal position that represents a food source. The first
+    generation has a randomly generated set of angles(alphas) that are used for
+    calculating their path to the goal. For each generation of snakes that do
+    not reach the goal, there are a fixed number of survivors and a new
+    generation is created by crossing the alphas of snake pairs to create
+    children. There is a chance after crossover of each snake regenerating
+    one of their alphas(mutating)
     """
     # set things up
     playground = [(0,32), (0,18)]
-    start = [13, 1]
-    goal = [13, 18]
+    start = [5, 2]
+    goal = [14, 14]
     goal_distance = dist(start, goal)
     opts = dict()
     opts.update({
         "PopulationSize": 50,
         "Generations": 1000,
         "MaxSteps": 25,
-        "MutProb": 0.05,
+        "MutProb": 0.00,
     })
     num_survivors = int(opts["PopulationSize"] * 0.04)
     snakes = gen_snakes(start, opts)
@@ -224,25 +259,39 @@ def ga_soln_snakes():
     #end setup
 
 
+    print("----------------------")
+    print("| Beginning the hunt |")
+    print("----------------------")
     for generation in range(opts["Generations"]):
+        if USE_ANIMATION:
+            ax.cla()
+            ax.set_xlim(left = 0, right = 32)
+            ax.set_ylim(bottom = 0, top = 18)
+
         for snake in snakes:
             snake.hunt()
 
+        best_distances = []
         for snake in snakes:
-            distances, goal_reached = evaluate(snake, goal, playground)
+            distances, goal_reached = evaluate(snake, goal, playground, opts)
+            best_distances.append(distances[0])
             if goal_reached: 
-                print("GOAL")
+                print("======================================================")
+                print("!!!!!  GOAL  !!!!!")
                 print("Generations elapsed: " + str(generation + 1))
                 print("Distance from goal achieved: " + str(distances[0]))
                 print("Starting distance from goal: " + str(goal_distance))
+                print("======================================================")
+                print("\n")
                 total_generations = generation + 1
                 break
         if goal_reached:
             break
+        best_distances = sorted(best_distances)
         print("Closest snake of generation " 
                 + str(generation + 1)
                 + ": "
-                + str(distances[0]))
+                + str(best_distances[0]))
 
         evals = []
         for snake in snakes:
@@ -272,7 +321,19 @@ def ga_soln_snakes():
 
 
 if __name__=="__main__":
-    trials = 10
+    trials = int(input("How many trials would you like to run?\n"))
+    animate = input("Would you like to use animation? y/n?\n")
+    while(animate != 'y' and animate != 'n'):
+        print("Choices are y or n")
+        animate = input("animate??? y/n\n")
+    if (animate == 'y'):
+        USE_ANIMATION = True
+    if USE_ANIMATION:
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.set_xlim(left = 0, right = 32)
+        ax.set_ylim(bottom = 0, top = 18)
+        fig.show()
     s = 0
     for i in range(trials):
         s += ga_soln_snakes()
