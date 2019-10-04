@@ -143,7 +143,7 @@ def select_survivors(snakes, num_survivors, survival_thresh):
     returns:
         list of survivors of class Snake, 
         list of tuples of reverse sorted selection probabilities and 
-            their indices
+            the indices of the associated snakes
     """
     survivors = []
     select_probs = dict()
@@ -223,11 +223,11 @@ def mutation(next_gen, opts):
     for snake in next_gen:
         mutate = random.uniform(0, 1)
         if (mutate < opts["MutProb"]):
-            #print("mutation occured")
             selected_alpha = int(random.uniform(0, opts["MaxSteps"]))
             snake.alphas[selected_alpha] = [
                     random.uniform(0, pi), random.uniform(0, (pi/2))
             ]
+
 
 def ga_soln_snakes():
     """ Creates population of snakes that hunt for food and make children.
@@ -243,34 +243,36 @@ def ga_soln_snakes():
     """
     # set things up
     playground = [(0,32), (0,18)]
-    start = [5, 2]
-    goal = [14, 14]
+    start = [5, 1]
+    goal = [21, 13]
     goal_distance = dist(start, goal)
     opts = dict()
     opts.update({
         "PopulationSize": 50,
         "Generations": 1000,
         "MaxSteps": 25,
-        "MutProb": 0.00,
+        "MutProb": 0.50,
     })
     num_survivors = int(opts["PopulationSize"] * 0.04)
     snakes = gen_snakes(start, opts)
     total_generations = opts["Generations"]
     #end setup
 
-
     print("----------------------")
     print("| Beginning the hunt |")
     print("----------------------")
+    print("Goal located at " + str(goal))
     for generation in range(opts["Generations"]):
         if USE_ANIMATION:
             ax.cla()
             ax.set_xlim(left = 0, right = 32)
             ax.set_ylim(bottom = 0, top = 18)
 
+        # Path generation
         for snake in snakes:
             snake.hunt()
 
+        # Evaluation of path
         best_distances = []
         for snake in snakes:
             distances, goal_reached = evaluate(snake, goal, playground, opts)
@@ -297,24 +299,32 @@ def ga_soln_snakes():
         for snake in snakes:
             evals.append(snake.eval)
 
+        # Selection probability calculation
         for snake in snakes:
             calc_select_prob(snake, evals)
 
+        # Generate survivor threshold and pick survivors
         survival_thresh = random.uniform(0, 1)
         survivors, sp = select_survivors(
                 snakes, num_survivors, survival_thresh)
+        # In case of no survivors, pick best 2 snakes by selection prob
         if not survivors:
             for i in range(int(num_survivors)):
                 survivors.append(snakes[int(sp[i][0])])
         next_gen = survivors
 
+        # Determine the parents for crossover
         parents = xover_selection(survivors, snakes, opts, num_survivors)
+        
+        # Crossover to make children
         children = xover(parents, opts, start)
         for child in children:
             next_gen.append(child)
 
+        # Chance for each snake to mutate
         mutation(next_gen, opts)
 
+        # The new generation becomes the current one
         snakes = next_gen
 
     return total_generations
@@ -334,6 +344,7 @@ if __name__=="__main__":
         ax.set_xlim(left = 0, right = 32)
         ax.set_ylim(bottom = 0, top = 18)
         fig.show()
+
     s = 0
     for i in range(trials):
         s += ga_soln_snakes()
