@@ -3,7 +3,6 @@ import time
 import random
 from math import inf
 from os import system
-from copy import deepcopy
 
 class Board ():
     def __init__ (self):
