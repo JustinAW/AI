@@ -1,4 +1,7 @@
-﻿(define (domain eightpuzzle)
+﻿;; Justin Weigle
+;; Eight Tile Puzzle PDDL domain
+
+(define (domain eightpuzzle)
     (:requirements :strips :typing)
 
     (:types place physobj - object
